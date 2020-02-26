@@ -62,5 +62,17 @@ request.onload = function() {
 		console.log(total);
 	}
 	reduce_oddsum_meth();
+	function arr_splice(){
+		const arr=[2,4,6,7,12];
+		arr.splice(3,1,8,10);
+		console.log(arr);
+	}
+	arr_splice();
+	function arr_slice(){
+		const str_arr=["apple","banana","grapes","orange","kiwi"];
+		const sli_arr=str_arr.slice(1,3);
+		console.log(sli_arr)
+	}
+	arr_slice();
 }
 request.send();

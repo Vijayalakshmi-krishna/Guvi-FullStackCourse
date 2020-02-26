@@ -1,4 +1,5 @@
 //Program to use array methods
+//Update for additional array functions
 
 var request = new XMLHttpRequest()
 request.open('GET', 'https://restcountries.eu/rest/v2/all', true)

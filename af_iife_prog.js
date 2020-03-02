@@ -68,10 +68,11 @@ let op_pall_arr=[];
 		}
 	}
 	console.log(op_pall_arr);
+	console.log("program 4")
 })(pall_arr);
 
 //program to find median of two arrays
-console.log("program 4")
+
 inp_arr1=[10,14,13,12,17];
 inp_arr2=[25,22,20,19,31];
 (function(arr1,arr2){
@@ -92,6 +93,45 @@ inp_arr2=[25,22,20,19,31];
 		var med2=inp_arr2[ind-1];
 	}
 	console.log(med1.toString() + " "+ med2.toString());
+	console.log("program 5")
 
 })(inp_arr1,inp_arr2);
 
+var inp_arr=[12,23,12,24,25];
+function rem_dup_item(inp_arr)
+{
+	
+	var uniq_arr=[];
+	var res_arr=inp_arr.reduce((uniq_arr,item)=>{
+		if (!(uniq_arr.includes(item))){
+			uniq_arr.push(item);
+			return uniq_arr;
+		}
+		else{
+			ind=inp_arr.indexOf(item);
+			inp_arr.splice(ind,1);
+			return uniq_arr;
+		}
+	
+	},[]);
+	console.log(inp_arr);
+	console.log("program 6")
+}
+
+rem_dup_item(inp_arr);
+
+
+//rotate an array by ktimes
+inp_arr=[1,2,3,4,5];var k=3;
+
+function arr_rotate(inp_arr,k){
+    for (i=0;i<k;i++){
+
+        var temp=inp_arr.shift();
+        inp_arr[inp_arr.length]=temp;
+        console.log(inp_arr);
+    }
+    
+}
+
+arr_rotate(inp_arr,k);

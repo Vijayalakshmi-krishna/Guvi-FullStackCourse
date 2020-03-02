@@ -13,7 +13,7 @@ request.onload = function() {
 			if (len <= 5) {
 				return item.capital;
 			}
-		})
+		})	
 		console.log(filteredItems);
 	}
 	arr_filter();
@@ -62,6 +62,8 @@ request.onload = function() {
 		console.log(total);
 	}
 	reduce_oddsum_meth();
+
+	//use splice and slice method in array
 	function arr_splice(){
 		const arr=[2,4,6,7,12];
 		arr.splice(3,1,8,10);

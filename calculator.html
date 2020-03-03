@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Caculator</title>
+  </head>
+
+  <body>
+    <script src="calculator.js">          
+    </script>
+      <form>
+        <table border="1">
+            <th colspan=4>
+              MY CALCULATOR
+             <input type="textbox" id="text1">      
+            </th>
+            <tr colspan=4>
+                <td><input type="button" id="but_1" value="1" onclick="setdata('1')"></td>
+                <td><input type="button" id="but_2" value="2" onclick="setdata('2')"></td>
+                <td><input type="button" id="but_3" value="3" onclick="setdata('3')"></td>
+                <td><input type="button" id="but_+" value="+"onclick="setdata('+')"></td>
+                <br>
+
+            </tr>
+            <tr>
+                <td ><input type="button" id="but_4" value="4" onclick="setdata('4')"></td>
+                <td><input type="button" id="but_5" value="5" onclick="setdata('5')"></td>
+                <td><input type="button" id="but_6" value="6" onclick="setdata('6')"></td>
+                <td><input type="button" id="but_-" value="-" onclick="setdata('-')"></td>
+                <br>
+
+            </tr>
+            <tr>
+                <td ><input type="button" id="but_7" value="7" onclick="setdata('7')"></td>
+                <td><input type="button" id="but_8" value="8" onclick="setdata('8')"></td>
+                <td><input type="button" id="but_9" value="9" onclick="setdata('9')"></td>
+                <td><input type="button" id="but_*" value="*" onclick="setdata('*')"></td>
+                <br>
+
+            </tr>
+            <tr>
+                <td ><input type="button" id="but_c" value="c" onclick="setdata('c')"></td>
+                <td><input type="button" id="but_0" value="0" onclick="setdata('0')"></td>
+                <td><input type="button" id="but_=" value="=" onclick="calculate()"></td>
+                <td><input type="button" id="but_/" value="/" onclick="setdata('/')"></td>
+                <br>
+
+            </tr>
+        </table>
+        
+      </form>
+      
+      
+    
+  </body>
+</html>

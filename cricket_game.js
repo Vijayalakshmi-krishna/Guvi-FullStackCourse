@@ -4,7 +4,7 @@ function fn_bat(but_id){
                
         Disable_button("bat_team_2");
         var play_obj1=new Team(11,36,6)
-        var tot_runs=play_obj1.calculateRun();
+        var tot_runs=play_obj1.calculateRun(but_id);
         document.getElementById("result_team1").value=tot_runs;
         
         localStorage.setItem("res_T1", result_team1.value);
@@ -69,7 +69,7 @@ class Team{
         this.runs=0;
         this.player_balls=player_balls;
     }
-    calculateRun(){
+    calculateRun(but_id){
         var score_arr=[];
         
         while(this.tot_balls>0)
@@ -99,15 +99,26 @@ class Team{
             this.tot_balls--;
            
         }
+        
+        
+        var pre=document.createElement("pre");
+        document.body.appendChild(pre);
+
         score_arr=score_arr.map(Number);
-        var score_lbl=document.createElement("label");
-        document.body.appendChild(score_lbl);
+       var score_lbl=document.createElement("label");
+        pre.appendChild(score_lbl);
+        if(but_id=="bat_team_1"){
+            score_lbl.textContent="TEAM-1-PLAYERS SCORE\n"
+        }
+        else{
+            score_lbl.textContent="TEAM-2-PLAYERS SCORE\n"
+        }
         for (var i=0;i<score_arr.length;i++){
             if (i==0){
-                score_lbl.textContent+="player 0="+score_arr[i];
+                score_lbl.textContent+="player 0="+score_arr[i]+"\n";
             }
             else{
-                score_lbl.textContent+="Player "+ i.toString() + "=" +(score_arr[i]-score_arr[i-1]).toString();
+                score_lbl.textContent+="Player "+ i.toString() + "=" +(score_arr[i]-score_arr[i-1]).toString()+"\n";
             }
             
         }

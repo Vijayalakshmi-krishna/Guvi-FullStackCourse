@@ -2,45 +2,43 @@ function fn_bat(but_id){
      
     if(but_id=="bat_team_1"){
                
-        Disable_button("bat_team_2");
+       
         var play_obj1=new Team(11,36,6)
         var tot_runs=play_obj1.calculateRun(but_id);
-        document.getElementById("result_team1").value=tot_runs;
+        var pl_sc_arr=play_obj1.calcplayerscore(but_id);   
         
-        localStorage.setItem("res_T1", result_team1.value);
-        
-        fn_play();
+        localStorage.setItem("res_T1", tot_runs);
+        localStorage.setItem("player_score_T1", pl_sc_arr);
+       
+        play_obj1.Disable_button("bat_team_1");
+       // fn_play(pl_sc_arr,but_id);
         
     }
     
        if(but_id=="bat_team_2") {
 
-        Disable_button("bat_team_1");
+        //Disable_button("bat_team_1");
         var play_obj2=new Team(11,36,6)
         var tot_runs=play_obj2.calculateRun();
-        document.getElementById("result_team2").value=tot_runs;
-        
-        localStorage.setItem("res_T2", result_team2.value);
-        
-        fn_play();
+        var pl_sc_arr=play_obj2.calcplayerscore(but_id); 
+        localStorage.setItem("res_T2", tot_runs);
+        localStorage.setItem("player_score_T2", pl_sc_arr);
+        play_obj2.Disable_button("bat_team_2");
+      //  fn_play(pl_sc_arr,but_id);
         
        }  
      
 }
 
-function fn_play(){
+/*function fn_play(pl_sc_arr,but_id){
 
-        if((document.getElementById("result_team1").value!="")&&(document.getElementById("result_team2").value!=""))
-        {
-            Disable_button("bat_team_1");
-            Disable_button("bat_team_2");
-        }
-        else if (document.getElementById("result_team1").value!="")
+        if(pl_sc_arr.length>0 && but_id=="bat_team_1")
         {
             Disable_button("bat_team_1");
             Enable_button("bat_team_2");
         }
-        else if(document.getElementById("result_team2").value!=""){
+        else if(pl_sc_arr.length>0 && but_id=="bat_team_2")
+        {
             Disable_button("bat_team_2");
             Enable_button("bat_team_1");
         }
@@ -51,14 +49,14 @@ function fn_play(){
         }
         
         
-}
-function Enable_button(id){
+}*/
+/*function Enable_button(id){
     document.getElementById(id).disabled=false;
            
 }
 function Disable_button(id){
     document.getElementById(id).disabled=true;
-}
+}*/
 
 
 
@@ -68,9 +66,11 @@ class Team{
         this.tot_balls=tot_balls;
         this.runs=0;
         this.player_balls=player_balls;
+        this.score_arr=[];
+        this.player_score=[];
     }
     calculateRun(but_id){
-        var score_arr=[];
+       
         
         while(this.tot_balls>0)
         {
@@ -90,42 +90,41 @@ class Team{
                     this.player_balls--;
 
                 }
-               // scoreboard(this.players,this.runs);
-                score_arr.push(this.runs);
+              
+                this.score_arr.push(this.runs);
                 this.players--;
                
             }
             
             this.tot_balls--;
            
-        }
-        
-        
-        var pre=document.createElement("pre");
-        document.body.appendChild(pre);
-
-        score_arr=score_arr.map(Number);
-       var score_lbl=document.createElement("label");
-        pre.appendChild(score_lbl);
-        if(but_id=="bat_team_1"){
-            score_lbl.textContent="TEAM-1-PLAYERS SCORE\n"
-        }
-        else{
-            score_lbl.textContent="TEAM-2-PLAYERS SCORE\n"
-        }
-        for (var i=0;i<score_arr.length;i++){
-            if (i==0){
-                score_lbl.textContent+="player 0="+score_arr[i]+"\n";
-            }
-            else{
-                score_lbl.textContent+="Player "+ i.toString() + "=" +(score_arr[i]-score_arr[i-1]).toString()+"\n";
-            }
-            
-        }
-
+        }       
+       
         return (this.runs);
     }
-    
+
+    calcplayerscore(but_id){
+
+        for (var i=0;i<this.score_arr.length;i++){
+            if (i==0){
+                this.player_score.push(this.score_arr[0]);
+            }
+            else{
+                this.player_score.push(this.score_arr[i]-this.score_arr[i-1]);
+
+            }
+        }
+        return (this.player_score);
+        
+    }
+    Enable_button(id){
+        document.getElementById(id).disabled=false;
+               
+    }
+
+     Disable_button(id){
+    document.getElementById(id).disabled=true;
+}
 
 
 }

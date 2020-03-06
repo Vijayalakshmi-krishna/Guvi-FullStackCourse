@@ -1,4 +1,4 @@
-//Earm up tasks
+//Warm up tasks
 //program to find even or odd
 console.log("PROGRAM 1");
 var iseven=((num)=>{

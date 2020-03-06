@@ -1,4 +1,6 @@
 
+
+//Mandatory Tasks
 //program to capitalize the items in the string
 console.log("program 1");
 let op_arr=[];

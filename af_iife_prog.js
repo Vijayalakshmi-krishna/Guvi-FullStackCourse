@@ -1,6 +1,23 @@
 
 
 //Mandatory Tasks
+
+
+//print odd numbers in an array
+
+var inp_arr=[1,2,3,4,5,6,7];
+
+(function (inp_arr){
+
+	for (i in inp_arr){
+		if (inp_arr[i] %2 !=0){
+			console.log(inp_arr[i])
+		}
+  }
+}
+)
+(inp_arr);
+
 //program to capitalize the items in the string
 console.log("program 1");
 let op_arr=[];
@@ -98,7 +115,7 @@ inp_arr2=[25,22,20,19,31];
 	console.log("program 5")
 
 })(inp_arr1,inp_arr2);
-
+//return duplicate items
 var inp_arr=[12,23,12,24,25];
 function rem_dup_item(inp_arr)
 {
@@ -135,5 +152,18 @@ function arr_rotate(inp_arr,k){
     }
     
 }
-
+//sum of all numbers in an array
 arr_rotate(inp_arr,k);
+console.log("program sum array")
+inp_arr=[1,2,3,4,5];
+(function (inp_arr){
+
+	var sum=0;
+	for (i in inp_arr){
+		sum+=inp_arr[i];
+	}
+	console.log(sum);
+}
+
+
+)(inp_arr);

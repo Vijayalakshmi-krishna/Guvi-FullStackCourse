@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>countDown</title>
+<script>
+        function countdown(start, end) {
+            let current = start;
+            setTimeout(function go() {
+                 document.getElementById("display").innerHTML=current+"<br>";
+                if (current > end) {
+                    setTimeout(go, 1000);
+                }
+                else
+                {
+                    document.getElementById("display").innerHTML="HAPPY NEW YEAR!!!";
+                }
+                current--;
+            }, 1000);
+        }
+  
+        countdown(10, 0);
+      
+    </script>
+</head>
+<body>    
+<div id="display">Count down starts !!!</div>
+</body>
+</html>

@@ -2,22 +2,25 @@
     <head>
       <title>promise</title>
         <script>
-            //fetch from restcountries ApI
-            var fetch_rstcnt= fetch("https://restcountries.eu/rest/v2/all");
+            function execute(){
+ //fetch from restcountries ApI
+ var fetch_rstcnt= fetch("https://restcountries.eu/rest/v2/all");
              fetch_rstcnt.then(function(data){
             return data.json();
         })
         .then(function(finaldata){
         console.log(finaldata)
-        //Filter method to filter one particular country from rest countries API
+        //Filter method to filter one particular country from rest countries 
+        var cname=document.getElementById("name").value;
+        
         const filteredItems = finaldata.filter((item) => {
-          return item.name=="Hungary";
+          return item.name==cname;
         }
         );
         //console.log(filteredItems[0].alpha2Code);	
         var code=filteredItems[0].alpha2Code;
         var flag=filteredItems[0].flag;
-        var name=filteredItems[0].name;
+        var name=filteredItems[0].capital;
         //Display the flag for the country
         document.getElementById("flag").src=flag;
         document.getElementById("flag").style.width="100px"
@@ -41,6 +44,8 @@
         console.error(err);
     })
 
+            }
+           
     //function to convert kelvin to celcius
     function kel_cel(kelvin)
     {
@@ -51,7 +56,10 @@
     </head>
 
     <body>
+        <h2 align="center">Weather Summary</h2>
 <div id="country" align="center">
+    <input type="text" id="name" placeholder="Enter country name">
+    <input type="submit" id="submit" value="Submit" onclick="execute()">
     <p id="weather" ></p>
     <img id="flag"></img>
 </div>

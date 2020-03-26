@@ -1,0 +1,131 @@
+<html>
+
+<head>
+    <style>
+        table,tr{
+            border-collapse: collapse;
+            border:1px solid black;
+            box-sizing: border-box;
+        }
+    </style>
+    <script>
+
+        function insert()
+        {
+            var data={
+                name:document.getElementById("name").value,
+
+                age:document.getElementById("age").value,
+
+                gender:document.forms.myForm.gender.value,
+               
+                email:document.getElementById("email").value
+            };
+            
+            fetch("http://localhost:3000/users",{
+                method:"POST",
+                headers:{
+                    Accept:"application/json",
+                    "content-Type":"application/json"
+                },
+                body:JSON.stringify(data)
+            })
+            .then(function(data){
+                console.log(data.json());
+
+            })
+        }
+
+        function display()
+        {
+            var data={name:document.getElementById("name").value};
+            fetch("http://localhost:3000/",{
+                method:'GET'
+            })
+            .then(function(data){
+                console.log(data.json())
+        })
+
+        }
+
+        function update()
+        {
+            var data={ name:document.getElementById("name").value,
+                age:document.getElementById("age").value}
+            fetch("http://localhost:3000/users",{
+                method:"PUT",
+                headers:{
+                    Accept:"application/json",
+                    "content-Type":"application/json"
+                },
+                body:JSON.stringify(data)
+            })
+            .then(function(data){
+                console.log(data.json())
+        })
+        }
+
+        function del()
+        {
+            var data={name:document.getElementById("name").value}
+            fetch("http://localhost:3000/users",{
+            method:"DELETE",
+            headers:{
+                    Accept:"application/json",
+                    "content-Type":"application/json"
+                    },
+                    body:JSON.stringify(data)
+                })
+
+            .then(function(data){
+                console.log(data.json())
+            })
+        }
+
+    </script>
+</head>
+
+<body>
+    <form name="myForm">
+        <table id="table" align="center">
+            <th colspan="2" align="center">
+                USER DETAILS FORM
+            </th>
+            <tr>
+                <td><label>Name:</label></td>
+                <td><input type="text" id="name" placeholder="Enter your name"></td>
+            </tr>
+            <tr>
+                <td><label>Age:</label> </td>
+                <td><input type="Number" id="age" placeholder="Enter your Age"></td>
+            </tr> 
+            <tr>
+                <td>
+                    <label>Gender:</label>
+                </td>
+                <td><input type="radio" id="male" name="gender" value="male"><label>Male</label>
+                    <input type="radio" id="female" name="gender" value="female"><label>Female</label>
+                 </td>
+
+            </tr>           
+            <tr>
+                <td><label>Email:</label></td>
+                <td> <input type="email" id="email" placeholder="enter your Email"></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                <input type="submit" value="Insert" onclick="insert(); return false;">
+                <input type="submit" value="Update" onclick="update(); return false;">
+                <input type="submit" value="Display" onclick="display(); return false;">                
+                <input type="submit" value="Delete" onclick="del(); return false;">
+               </td>
+            </tr>
+        </table>
+
+    </form>
+
+
+    </form>
+</body>
+
+</html>

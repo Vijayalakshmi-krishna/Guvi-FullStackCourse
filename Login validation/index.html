@@ -7,25 +7,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style>
-       
-        form{
-            padding:50px;
+        form {
+            padding: 50px;
 
-            
+
         }
-        table{
-            background-color:lightcyan;
+
+        table {
+            background-color: lightcyan;
             width: 25%;
-            height:25%;
-        
+            height: 25%;
+
         }
-        input[type=text],input[type=password]
-        select
-         {
-            width: 100%;            
+
+        input[type=text],
+        input[type=password] select {
+            width: 100%;
             border: 1px solid #ccc;
             border-radius: 4px;
-                  
+
             margin: 8px 0;
             padding: 12px 20px;
             display: inline-block;
@@ -40,7 +40,7 @@
         input[type=submit] {
             background-color: #4CAF50;
             color: white;
-            margin:5px;
+            margin: 5px;
             margin: 8px 0;
             padding: 12px 20px;
             border: none;
@@ -52,7 +52,6 @@
         input[type=submit]:hover {
             background-color: #45a049;
         }
-
     </style>
     <script>
         function register() {
@@ -76,13 +75,13 @@
                 })
         }
 
-        function login() {
+        async function login() {
             var data = {
                 email: document.getElementById("email").value,
                 password: document.getElementById("password").value
             };
 
-            fetch("http://localhost:3000/login", {
+            var resData = await fetch("http://localhost:3000/login", {
                 method: "POST",
                 headers: {
                     Accept: "application/json",
@@ -92,20 +91,35 @@
                 body: JSON.stringify(data)
 
             })
-                .then(function (data) {
-                    console.log(data.json())
-                })
+
+            var rData = await resData.json();
+            console.log(rData);
+            var token = (rData.token);
+            localStorage.setItem('token', token);
+            //location.replace("dashboard.html")
+
+            var dashboard = await fetch("http://localhost:3000/dashboard", {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    "content-Type": "application/json",
+                    "Authorization": localStorage.getItem('token')
+                },
+                body: JSON.stringify(data)
+
+            })
+            var tData = await dashboard.json();
+            console.log(tData);
 
         }
-        function toggle(){
-           var input=document.getElementById("password");
-           if(input.type==="password")
-           {
-               input.type="text";
-           }
-           else{
-            input.type = "password";
-           }
+        function toggle() {
+            var input = document.getElementById("password");
+            if (input.type === "password") {
+                input.type = "text";
+            }
+            else {
+                input.type = "password";
+            }
 
         }
     </script>
@@ -133,7 +147,7 @@
             <tr>
                 <td colspan="2" align="center">
                     <input type="submit" value="Register" onclick="register(); return false;">
-                    <input type="submit"  value="Login" onclick="login(); return false;">
+                    <input type="submit" value="Login" onclick="login(); return false;">
                 </td>
             </tr>
         </table>

@@ -1,109 +1,103 @@
-const express=require('express');
-const app=express();
-const bodyParser=require('body-parser');
-const cors=require('cors');
-const mongoClient=require('mongodb');
-const url="mongodb://localhost:27017"
-const bcrypt=require('bcrypt');
-const saltrounds=10;
-const jwt=require('jsonwebtoken');
-//var LocalStorage = require('node-localstorage').LocalStorage,
-//localStorage = new LocalStorage('./scratch');
+const express = require('express');
+const app = express();
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const mongoClient = require('mongodb');
+const url = "mongodb://localhost:27017"
+const bcrypt = require('bcrypt');
+const saltrounds = 10;
+const jwt = require('jsonwebtoken');
+
 app.use(cors());
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended:false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
-function authenticate(req,res,next)
-{
-    let header=req.header('Authorization')
-    console.log(header)
-    if(header ==undefined)
-    {
+//function to authenticate the user with valid JWT token
+function authenticate(req, res, next) {
+    let header = req.header('Authorization')
+
+    if (header == undefined) {
         res.status(401).json({
-            message:"unauthorized"
+            message: "unauthorized"
         });
     }
-    else{
-       var decode= jwt.verify(header,'abcghimno');
-       console.log(decode);
-       next();
+    else {
+        //Allow users with valid token
+        var decode = jwt.verify(header, 'abcghimno');        
+        next();
     }
-    
+
 }
-
-app.post("/register",function(req,res){
-   console.log(req.body);
-    mongoClient.connect(url,{useUnifiedTopology: true},function(err,client){
+//New users Route
+app.post("/register", function (req, res) {
+    mongoClient.connect(url, { useUnifiedTopology: true }, function (err, client) {
         if (err) throw err;
-        var db=client.db("appdb");
-        var newData={
-            email:req.body.email
+        var db = client.db("appdb");
+        var newData = {
+            email: req.body.email
         }
-
-        bcrypt.genSalt(saltrounds,function(err,salt){
-           if(err) throw err;
-           //console.log(salt);
-           bcrypt.hash(req.body.password,salt,function(err,hash){
-            if(err) throw err;
-            console.log(hash);
-            newData.password=hash;  
-
-            db.collection("userlogin").insertOne(newData,function(err,result){
-                if(err) throw err;
-                //console.log(result);
-                console.log("User registered")
-                client.close();
-                res.json({
-                    message:"User registered"
+        //generate salt
+        bcrypt.genSalt(saltrounds, function (err, salt) {
+            if (err) throw err;
+            //encrypt the password
+            bcrypt.hash(req.body.password, salt, function (err, hash) {
+                if (err) throw err;                
+                newData.password = hash;
+                //Insert new user into DB
+                db.collection("userlogin").insertOne(newData, function (err, result) {
+                    if (err) throw err;
+                    client.close();
+                    res.json({
+                        message: "User registered"
+                    })
                 })
             })
-           })
         })
 
-        
-        
+
+
     })
-    
+
 
 })
 
-app.post("/login",function(req,res){
-    console.log(req.body);
-    mongoClient.connect(url,function(err,client){
-        if(err) throw err;
-        var db=client.db("appdb");
-        db.collection("userlogin").findOne({email:req.body.email},function(err,userData){
-            if(err) throw err;
-            console.log(userData);
-            bcrypt.compare(req.body.password,userData.password,function(err,result){
-            console.log(result);
-            if(result)
-            {
-                var jwtToken=jwt.sign({id:userData.id},'abcghimno')
-                console.log(jwtToken);
-               // localStorage.setItem("token",jwtToken);
-                res.json({message:"success",
-                token:jwtToken})
-            }
-            else
-            {
-                res.json({message:"Login Failed",
-               })
-            }
-        })
+//Already registered users Route
+app.post("/login", function (req, res) {
+
+    mongoClient.connect(url, function (err, client) {
+        if (err) throw err;
+        var db = client.db("appdb");
+        db.collection("userlogin").findOne({ email: req.body.email }, function (err, userData) {
+            if (err) throw err;
+
+            //compare the password and generate jwt token
+            bcrypt.compare(req.body.password, userData.password, function (err, result) {
+
+                if (result) {
+                    var jwtToken = jwt.sign({ id: userData.id }, 'abcghimno')
+                    res.json({
+                        message: "success",
+                        token: jwtToken
+                    })
+                }
+                else {
+                    res.json({
+                        message: "Login Failed",
+                    })
+                }
+            })
         })
     })
 })
 
+//Logged in users Route
+app.get("/dashboard", authenticate, function (req, res) {
 
-app.get("/dashboard",authenticate,function(req,res)
-{
-    console.log("in dashboard")
     res.json({
-        message:"protected"
+        message: "protected"
     })
 })
 
-app.listen(3000,function(){
+app.listen(3000, function () {
     console.log("Port is running in 3000...")
 })

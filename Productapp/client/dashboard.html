@@ -1,0 +1,99 @@
+<html>
+
+<head>
+    <title>
+        My Dashboard
+    </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body{
+            background-color:mediumaquamarine;
+        }
+        form {
+            padding: 50px;
+
+        }
+
+        table {
+            background-color: lightcyan;
+            width: 25%;
+            height: 25%;
+        }
+
+        input[type=text],
+        select {
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+
+            margin: 8px 0;
+            padding: 12px 20px;
+            display: inline-block;
+            box-sizing: border-box;
+        }
+
+        label {
+            padding: 12px 12px 12px 0;
+            display: inline-block;
+        }
+
+        input[type=submit] {
+            background-color: #4CAF50;
+            color: white;
+            margin: 5px;
+            margin: 8px 0;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: center;
+        }
+
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<script src="dashboard.js">
+
+</script>
+
+<body>
+    <h1 id="h1">This is my Dashboard</h1>
+    <div id="welcome" align="center">
+        <form id="prodForm">
+            <table id="prodtable">
+                <tr>
+                    <td><label>Enter a product</label></td>
+                    <td><input type="text" id="essentials" placeholder="enter a product"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Quantity:</label>
+                    </td>
+                    <td><input type="number" id="quantity" max="5"></td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center">
+                        <input type="submit" id="placeorder" value="Add Item" onclick="insert();return false;">
+                    </td>
+                </tr>
+            </table>
+
+            <table id="mycart" border="1px solid black">
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Delete</th>
+                    <th>Update</th>
+                </tr>
+
+            </table>
+        </form>
+
+
+    </div>
+
+</body>
+
+</html>

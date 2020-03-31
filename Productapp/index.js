@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //function to authenticate the user with valid JWT token
 function authenticate(req, res, next) {
     let header = req.header('Authorization')
-    console.log(header);
+    
     if (header == undefined) {
         res.status(401).json({
             message: "unauthorized"
@@ -25,12 +25,16 @@ function authenticate(req, res, next) {
     else {
         //Allow users with valid token
         var decode = jwt.verify(header, 'abcghimno');
-        console.log("token")
-        console.log(decode.email);
-        
-        next();
+        if (decode !== undefined) {
+            req.email = decode.email          
+            next();
+        }
+        else {
+            res.status('401').json({
+                message: "Unauthorized"
+            });
+        }
     }
-
 }
 //New users Route
 app.post("/register", function (req, res) {
@@ -38,6 +42,9 @@ app.post("/register", function (req, res) {
         if (err) throw err;
         var db = client.db("appdb");
         var newData = {
+            name:req.body.name,
+            gender:req.body.gender,
+            dob:req.body.dob,            
             email: req.body.email
         }
         //generate salt
@@ -81,7 +88,8 @@ app.post("/login", function (req, res) {
                     var jwtToken = jwt.sign({ email: req.body.email }, 'abcghimno')
                     res.json({
                         message: "success",
-                        token: jwtToken
+                        token: jwtToken,
+                        userid:userData._id
                     })
                 }
                 else {
@@ -98,17 +106,19 @@ app.post("/login", function (req, res) {
 app.get("/dashboard", authenticate, function (req, res) {
     
     res.json({
-        message: "protected"
+        message: "protected",
+        email:req.email
     })
 })
-//yet to work on...
-//to get the details of particular user
-app.get('/user', function (req, res) {
 
+//To get the details of Logged in  user
+app.get('/user/:id', function (req, res) {
+ var userid=req.params.id 
+ var ObjectId = require('mongodb').ObjectID;
     mongoClient.connect(url, function (err, client) {
         if (err) throw err;
         var db = client.db("appdb");
-        var userData = db.collection("userdetails").findOne({ email: localStorage.getItem("email") }).toArray();
+        var userData = db.collection("userdetails").findOne({},{_id:ObjectId(userid)});
 
         userData.then(function (data) {
             console.log(data);
@@ -167,14 +177,17 @@ app.get("/display", function (req, res) {
     });
 });
 
-//delete the selected product
-app.delete("/delete", function (req, res) {
-
+//delete the selected product (using product id)
+app.delete("/delete/:id", function (req, res) {
+    let pdtid=req.params.id
+    console.log(pdtid);
     console.log(req.body);
+    var ObjectId = require('mongodb').ObjectID;
+
     mongoClient.connect(url, function (err, client) {
         if (err) throw err;
         var db = client.db("appdb");
-        db.collection("UserPdt").deleteOne({ product: req.body.product }, function (err, result) {
+        db.collection("UserPdt").deleteOne({ _id: ObjectId(pdtid) }, function (err, result) {
             if (err) throw err;
             console.log("deleted in DB");
             client.close();
@@ -185,16 +198,17 @@ app.delete("/delete", function (req, res) {
     });
 });
 
-//update the quantity for the selected product
-app.put("/update", function (req, res) {
-
+//update the quantity for the selected product id
+app.put("/update/:id", function (req, res) {
+    let pdtid=req.params.id
     console.log(req.body);
     mongoClient.connect(url, function (err, client) {
         if (err) throw err;
         var db = client.db("appdb");
+        var ObjectId = require('mongodb').ObjectID;
         db.collection("UserPdt").updateOne(
-            { product: req.body.product },
-            { $set: {quantity: req.body.quantity} }, function (err, result) {
+            { _id: ObjectId(pdtid) },
+            { $set: {product:req.body.product,quantity: req.body.quantity} }, function (err, result) {
                 if (err) throw err;
                 console.log("updated to db");
                 client.close();
@@ -211,7 +225,7 @@ app.get("/logout", function (req, res) {
         if(err) throw err;
         var db=client.db("appdb");
         db.collection("UserPdt").drop(function(err,result){
-            if(err) throw error;
+            if(err) throw err;
             console.log("db dropped");
             client.close();
             res.json({

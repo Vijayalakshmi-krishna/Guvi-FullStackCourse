@@ -6,9 +6,10 @@
     </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-        body{
-            background-color:mediumaquamarine;
+        body {
+            background-color:turquoise
         }
+
         form {
             padding: 50px;
 
@@ -20,7 +21,7 @@
             height: 25%;
         }
 
-        input[type=text],
+        input[type=text],input[type=number],
         select {
             width: 100%;
             border: 1px solid #ccc;
@@ -52,48 +53,69 @@
         input[type=submit]:hover {
             background-color: #45a049;
         }
+
+        #divlogout {
+            text-align: right;
+            float: right;
+        }
     </style>
 </head>
-<script src="dashboard.js">
 
-</script>
 
 <body>
-    <h1 id="h1">This is my Dashboard</h1>
+    <p>
+        <h1 id="h1"></h1>
+
+        <div id="divlogout">
+            <h3> <a align="right" href="loginform.html" onclick="logout();return false;">Logout</a></h3>
+        </div>
+
+
+    </p>
+
+    <h3 align="center">Build your cart</h3>
+
+
     <div id="welcome" align="center">
+
         <form id="prodForm">
             <table id="prodtable">
                 <tr>
-                    <td><label>Enter a product</label></td>
-                    <td><input type="text" id="essentials" placeholder="enter a product"></td>
+                    <td><label>Add/Edit fruits to your cart:</label></td>
+                    <td><input type="text" id="essentials" placeholder="Enter a fruit:"></td>
                 </tr>
                 <tr>
                     <td>
-                        <label>Quantity:</label>
+                        <label>Quantity(kg):</label>
                     </td>
-                    <td><input type="number" id="quantity" max="5"></td>
+                    <td><input type="number" id="quantity" max="5" value="1"></td>
                 </tr>
                 <tr>
                     <td colspan="2" align="center">
                         <input type="submit" id="placeorder" value="Add Item" onclick="insert();return false;">
+                        <input type="submit" id="viewcart" value="View Cart" onclick="showCart();return false;">
                     </td>
                 </tr>
             </table>
 
             <table id="mycart" border="1px solid black">
-                <tr>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Delete</th>
-                    <th>Update</th>
-                </tr>
+
 
             </table>
+        </form>
+        <form id="editPopup" class="edit">
+            <input type="text" id="edit_prod">
+            <input type="number" id="edit_quan" max="5" value="1">
+            <input type="submit" value="Edit" onclick="close(); return false;">
         </form>
 
 
     </div>
-
+    <script src="dashboard.js">
+        function close() {
+            window.close();
+        }
+    </script>
 </body>
 
 </html>

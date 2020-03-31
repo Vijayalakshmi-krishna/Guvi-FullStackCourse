@@ -1,5 +1,6 @@
+
 async function signin() {
-    
+
     var data = {
         email: document.getElementById("email").value,
         password: document.getElementById("password").value
@@ -21,10 +22,18 @@ async function signin() {
     var vtoken = (rData.token);
     console.log(vtoken);
     //store the token in local storage
-    
-   localStorage.setItem('token', vtoken);
-  
 
+    localStorage.setItem('token', vtoken);
+
+    const parseJwt = (vtoken) => {
+        try {
+            return JSON.parse(atob(vtoken.split('.')[1]));
+        } catch (e) {
+            return null;
+        }
+    };
+    
+    //console.log(parseJwt);
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", vtoken);
@@ -41,6 +50,7 @@ async function signin() {
         .then(result => {
             console.log(result);
             alert("user login verifed");
+            localStorage.setItem("email",data.email)
             location.replace("dashboard.html");
         })
         .catch(error => console.log('error', error));

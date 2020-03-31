@@ -1,17 +1,12 @@
-window.onload = showCart();
-//window.onload=getUserData();
-async function getUserData() {
-    var user = await fetch("http://localhost:3000/user", {
-        method: 'GET'
-    });
-    var userData = await user.json();
+//welcome the user
+var email = localStorage.getItem("email");
+window.onload = document.getElementById("h1").innerHTML = "welcome " + email;
+window.onload = document.getElementById("editPopup").style.display = "none";
 
-
-   //document.getElementById("h1").innerHTML="welcome "+  userData.name;
-}
-
+//insert the products
 async function insert() {
     var data = {
+        email: localStorage.getItem("email"),
         product: document.getElementById("essentials").value,
         quantity: document.getElementById("quantity").value
     };
@@ -27,22 +22,11 @@ async function insert() {
     })
     var vpdtlist = await resData.json();
     console.log(vpdtlist);
-    var row = mycart.insertRow();
-    var cell1 = row.insertCell(0);
-    cell1.innerHTML = data.product;
-    var cell2 = row.insertCell(1);
-    cell2.innerHTML = data.quantity;
-    var cell3 = row.insertCell(2);
-
-    img = document.createElement("img");
-    img.src = "trash.jpj";
-    img.style.cursor = "pointer";
-    img.style.width = "10px";
-    cell3.appendChild(img);
-
+    showCart();
 }
 async function showCart() {
 
+    //fetch the product from db
     var resData = await fetch("http://localhost:3000/display", {
         method: 'GET',
         headers: {
@@ -54,13 +38,19 @@ async function showCart() {
     });
     var dispcart = await resData.json();
     console.log(dispcart);
-    var x = document.getElementById("mycart").rows.length;
-    /*if(x>0){
-         for(i=1;i<x;i++)
-         {
-             document.getElementById("mycart").deleteRow(i);
-         }
-     }*/
+    mycart.innerHTML = "";
+
+    //populate the fetched data in the table
+
+    var trow = mycart.insertRow();
+    var hd1 = trow.insertCell(0);
+    hd1.innerHTML = "PRODUCT";
+    var hd2 = trow.insertCell(1);
+    hd2.innerHTML = "Quantity";
+    var hd3 = trow.insertCell(2);
+    hd3.innerHTML = "Delete";
+    var hd4 = trow.insertCell(3);
+    hd4.innerHTML = "Edit";
 
     for (i = 0; i < dispcart.length; i++) {
         var row = mycart.insertRow();
@@ -71,6 +61,7 @@ async function showCart() {
         cell2.innerHTML = dispcart[i].quantity;
         var cell3 = row.insertCell(2);
 
+        //delete option
         img = document.createElement("img");
         img.id = dispcart[i]._id
         img.src = "trash.jpg";
@@ -80,12 +71,14 @@ async function showCart() {
         (function (i) {
             img.onclick = function () {
                 var rowid = row.parentNode.parentNode.rowIndex;
+                //document.getElementById("mycart").deleteRow(rowid);
                 delItem(dispcart[i].product, rowid);
             }
         })(i);
 
+        //update option
         var cell4 = row.insertCell(3);
-
+        cell4.id = "cell4" + i;
         img = document.createElement("img");
         img.id = dispcart[i]._id
         img.src = "edit.png";
@@ -94,8 +87,9 @@ async function showCart() {
         cell4.appendChild(img);
         (function (i) {
             img.onclick = function () {
+                // document.getElementById("editPopup").style.display = "block";
                 var rowid = row.parentNode.parentNode.rowIndex;
-                updateItem(dispcart[i].product, rowid)
+                updateItem(dispcart[i].product, cell4.id)
             }
         })(i);
     }
@@ -103,9 +97,10 @@ async function showCart() {
 
 async function delItem(item, rowid) {
 
+    //delete clicked item from db
     var data = { product: item }
     console.log(data);
-    fetch("http://localhost:3000/delete", {
+    var resData = await fetch("http://localhost:3000/delete", {
         method: "DELETE",
         headers: {
             Accept: "application/json",
@@ -114,21 +109,23 @@ async function delItem(item, rowid) {
         body: JSON.stringify(data)
     })
 
-        .then(function (data) {
-            console.log(data.json())
-        })
-    document.getElementById("mycart").deleteRow(rowid);
+    var finData = await resData.json()
+    console.log(finData);
+    showCart();
 
 }
 
-async function updateItem(item, rowid) {
+async function updateItem(item, cellid) {
 
+    //update the quatity for the given product
     var data = {
         product: item,
         quantity: document.getElementById("quantity").value
+        //  edit_prod: document.getElementById("edit_prod").value,
+        //  edit_quan: document.getElementById("edit_quan").value
     }
     console.log(data);
-    fetch("http://localhost:3000/update", {
+    var resData = await fetch("http://localhost:3000/update", {
         method: "PUT",
         headers: {
             Accept: "application/json",
@@ -136,12 +133,29 @@ async function updateItem(item, rowid) {
         },
         body: JSON.stringify(data)
     })
+    var finData = await resData.json();
 
-        .then(function (data) {
-            console.log(data.json())
-        })
+    console.log(finData);
 
+    showCart();
+}
 
+async function logout() {
+
+    //logout from the current user
+    var resData = await fetch("http://localhost:3000/logout", {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            "content-Type": "application/json"
+        },
+
+    })
+    var finData = await resData.json();
+
+    console.log(finData);
+    localStorage.clear();
+    // location.replace("loginform.html");
 }
 
 

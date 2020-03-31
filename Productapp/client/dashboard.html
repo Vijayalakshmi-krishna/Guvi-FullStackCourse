@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         body {
-            background-color:turquoise
+            background-color: turquoise
         }
 
         form {
@@ -21,7 +21,8 @@
             height: 25%;
         }
 
-        input[type=text],input[type=number],
+        input[type=text],
+        input[type=number],
         select {
             width: 100%;
             border: 1px solid #ccc;
@@ -54,9 +55,9 @@
             background-color: #45a049;
         }
 
-        #divlogout {
-            text-align: right;
-            float: right;
+        #h3 {
+            text-align: left;
+            float: left;
         }
     </style>
 </head>
@@ -66,20 +67,17 @@
     <p>
         <h1 id="h1"></h1>
 
-        <div id="divlogout">
-            <h3> <a align="right" href="loginform.html" onclick="logout();return false;">Logout</a></h3>
+        <div id="userDet">
+            <h3><a href="" onclick="userInfo();return false;">Display User Info</a></h3>
         </div>
-
-
+        <h3 id="h3"> <a align="right" href="loginform.html" onclick="logout();return false;">Logout</a></h3>
     </p>
-
-    <h3 align="center">Build your cart</h3>
-
 
     <div id="welcome" align="center">
 
         <form id="prodForm">
             <table id="prodtable">
+                <th colpan="2">Fill your Cart with healthy fruits!!!</th>
                 <tr>
                     <td><label>Add/Edit fruits to your cart:</label></td>
                     <td><input type="text" id="essentials" placeholder="Enter a fruit:"></td>

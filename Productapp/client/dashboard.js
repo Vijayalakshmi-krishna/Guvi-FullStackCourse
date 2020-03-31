@@ -32,7 +32,6 @@ async function showCart() {
         headers: {
             Accept: "application/json",
             "content-Type": "application/json"
-
         }
 
     });
@@ -72,7 +71,7 @@ async function showCart() {
             img.onclick = function () {
                 var rowid = row.parentNode.parentNode.rowIndex;
                 //document.getElementById("mycart").deleteRow(rowid);
-                delItem(dispcart[i].product, rowid);
+                delItem(dispcart[i].product, rowid,dispcart[i]._id);
             }
         })(i);
 
@@ -89,18 +88,18 @@ async function showCart() {
             img.onclick = function () {
                 // document.getElementById("editPopup").style.display = "block";
                 var rowid = row.parentNode.parentNode.rowIndex;
-                updateItem(dispcart[i].product, cell4.id)
+                updateItem(dispcart[i].product,dispcart[i]._id)
             }
         })(i);
     }
 }
 
-async function delItem(item, rowid) {
+async function delItem(item, rowid,id) {
 
     //delete clicked item from db
-    var data = { product: item }
+    var data = { product: item ,_id:id}
     console.log(data);
-    var resData = await fetch("http://localhost:3000/delete", {
+    var resData = await fetch("http://localhost:3000/delete/"+data._id, {
         method: "DELETE",
         headers: {
             Accept: "application/json",
@@ -115,17 +114,17 @@ async function delItem(item, rowid) {
 
 }
 
-async function updateItem(item, cellid) {
+async function updateItem(item,id) {
 
     //update the quatity for the given product
     var data = {
-        product: item,
+        product: document.getElementById("essentials").value,
         quantity: document.getElementById("quantity").value
         //  edit_prod: document.getElementById("edit_prod").value,
         //  edit_quan: document.getElementById("edit_quan").value
     }
     console.log(data);
-    var resData = await fetch("http://localhost:3000/update", {
+    var resData = await fetch("http://localhost:3000/update/"+ id, {
         method: "PUT",
         headers: {
             Accept: "application/json",
@@ -155,7 +154,24 @@ async function logout() {
 
     console.log(finData);
     localStorage.clear();
-    // location.replace("loginform.html");
+     location.replace("loginform.html");
 }
 
+async function userInfo()
+{
+    var userid=localStorage.getItem("userid");
+    console.log(userid)
+    var resData = await fetch("http://localhost:3000/user/"+ userid, {
+        method: 'GET',
+        headers: {
+            Accept: "application/json",
+            "content-Type": "application/json"
+        }
+
+    });
+    var finData = await resData.json();
+    var details="Name:"+ finData.name +"<br>"+"Gender:"+finData.gender+"<br>"+"DateOfBirth:"+finData.dob+"<br>"
+    document.getElementById("userDet").innerHTML=details
+    
+}
 

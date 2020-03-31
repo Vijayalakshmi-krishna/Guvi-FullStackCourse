@@ -25,15 +25,7 @@ async function signin() {
 
     localStorage.setItem('token', vtoken);
 
-    const parseJwt = (vtoken) => {
-        try {
-            return JSON.parse(atob(vtoken.split('.')[1]));
-        } catch (e) {
-            return null;
-        }
-    };
-    
-    //console.log(parseJwt);
+
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Authorization", vtoken);
@@ -45,13 +37,16 @@ async function signin() {
         redirect: 'follow'
     };
     //get the decoded token for token verified users
-    fetch("http://localhost:3000/dashboard", requestOptions)
-        .then(response => response.text())
-        .then(result => {
-            console.log(result);
-            alert("user login verifed");
-            localStorage.setItem("email",data.email)
-            location.replace("dashboard.html");
-        })
-        .catch(error => console.log('error', error));
+
+    var resData = await fetch("http://localhost:3000/dashboard", requestOptions)
+
+    var finData = await resData.json();
+
+
+    console.log(finData);
+    alert("user login verified")
+    localStorage.setItem("email", finData.email)
+    localStorage.setItem("userid",rData.userid)
+    location.replace("dashboard.html");
+
 }

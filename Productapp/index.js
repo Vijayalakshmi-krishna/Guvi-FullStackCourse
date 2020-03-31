@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt');
 const saltrounds = 10;
 const jwt = require('jsonwebtoken');
 
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -15,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //function to authenticate the user with valid JWT token
 function authenticate(req, res, next) {
     let header = req.header('Authorization')
-
+    console.log(header);
     if (header == undefined) {
         res.status(401).json({
             message: "unauthorized"
@@ -24,6 +25,9 @@ function authenticate(req, res, next) {
     else {
         //Allow users with valid token
         var decode = jwt.verify(header, 'abcghimno');
+        console.log("token")
+        console.log(decode.email);
+        
         next();
     }
 
@@ -69,12 +73,12 @@ app.post("/login", function (req, res) {
         var db = client.db("appdb");
         db.collection("userdetails").findOne({ email: req.body.email }, function (err, userData) {
             if (err) throw err;
-
+            
             //compare the password and generate jwt token
             bcrypt.compare(req.body.password, userData.password, function (err, result) {
 
                 if (result) {
-                    var jwtToken = jwt.sign({ id: userData.id }, 'abcghimno')
+                    var jwtToken = jwt.sign({ email: req.body.email }, 'abcghimno')
                     res.json({
                         message: "success",
                         token: jwtToken
@@ -92,24 +96,25 @@ app.post("/login", function (req, res) {
 
 //Logged in users Route
 app.get("/dashboard", authenticate, function (req, res) {
-    //console.log(req.body.json());
+    
     res.json({
         message: "protected"
     })
 })
-
+//yet to work on...
+//to get the details of particular user
 app.get('/user', function (req, res) {
-    
+
     mongoClient.connect(url, function (err, client) {
         if (err) throw err;
         var db = client.db("appdb");
-        var userData = db.collection("userdetails").findOne({email:localStorage.getItem("email")}).toArray();
+        var userData = db.collection("userdetails").findOne({ email: localStorage.getItem("email") }).toArray();
 
         userData.then(function (data) {
             console.log(data);
             console.log("Data Displayed");
             client.close();
-            
+
             res.json(data)
 
         })
@@ -122,6 +127,7 @@ app.get('/user', function (req, res) {
     });
 });
 
+//add items to the table
 app.post("/insert", function (req, res) {
     mongoClient.connect(url, { useUnifiedTopology: true }, function (err, client) {
         if (err) throw err;
@@ -140,6 +146,7 @@ app.post("/insert", function (req, res) {
     })
 });
 
+//display all the products from the table
 app.get("/display", function (req, res) {
     mongoClient.connect(url, function (err, client) {
         if (err) throw err;
@@ -160,6 +167,7 @@ app.get("/display", function (req, res) {
     });
 });
 
+//delete the selected product
 app.delete("/delete", function (req, res) {
 
     console.log(req.body);
@@ -177,6 +185,7 @@ app.delete("/delete", function (req, res) {
     });
 });
 
+//update the quantity for the selected product
 app.put("/update", function (req, res) {
 
     console.log(req.body);
@@ -185,7 +194,7 @@ app.put("/update", function (req, res) {
         var db = client.db("appdb");
         db.collection("UserPdt").updateOne(
             { product: req.body.product },
-            { $set: { quantity: req.body.quantity } }, function (err, result) {
+            { $set: {quantity: req.body.quantity} }, function (err, result) {
                 if (err) throw err;
                 console.log("updated to db");
                 client.close();
@@ -195,6 +204,21 @@ app.put("/update", function (req, res) {
             });
 
     });
+});
+//drop the contents of the db
+app.get("/logout", function (req, res) {
+    mongoClient.connect(url,function(err,client){
+        if(err) throw err;
+        var db=client.db("appdb");
+        db.collection("UserPdt").drop(function(err,result){
+            if(err) throw error;
+            console.log("db dropped");
+            client.close();
+            res.json({
+                message:"user logged out"
+            })
+        })
+    })
 });
 
 

@@ -1,11 +1,11 @@
-//export{};
+export{};
 interface Teamtypes{
     players:Number,
     tot_balls:Number,
     player_balls:Number
 }
 
-export class Team {
+class Team {
     players;
     tot_balls;
     runs;
@@ -81,7 +81,7 @@ export class Team {
 }
 
 
-function fn_bat(but_id){
+let fn_bat=(but_id)=>{
      
     if(but_id=="bat_team_1"){
                

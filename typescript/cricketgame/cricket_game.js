@@ -47,8 +47,7 @@ var Team = /** @class */ (function () {
     };
     return Team;
 }());
-exports.Team = Team;
-function fn_bat(but_id) {
+var fn_bat = function (but_id) {
     if (but_id == "bat_team_1") {
         var play_obj1 = new Team({ players: 11, tot_balls: 36, player_balls: 6 });
         var tot_runs = play_obj1.calculateRun(but_id);
@@ -68,4 +67,4 @@ function fn_bat(but_id) {
         play_obj2.Disable_button("bat_team_2");
         //  fn_play(pl_sc_arr,but_id);
     }
-}
+};

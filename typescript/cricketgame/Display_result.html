@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <style>
+        .inlineTable{            
+            display: inline-block;
+                  
+        }
+    </style>
+<body>
+    <h1 align="center">CRICKET GAME RESULTS</h1>
+    <form>
+        <table border=1 align="center">
+            <tr>
+               <td> <label> Team 1 Runs </label></td>
+               <td> <label> Team 2 Runs </label></td>
+            </tr>
+            <tr>
+                <td> <input type="text" id="Score_T1"></td>
+                <td> <input type="text" id="Score_T2"></td>
+             </tr>
+             <tr>
+                <td> <label>Result</label></td>
+                <td> <input type="text" id="Win_team"></td>
+             </tr>
+        </table>
+        <br>
+        <div class="scoreboard" style="text-align:center;">
+            <h1>SCORE BOARD</h1>
+            <br>
+            <table class="inlineTable" id="T1_scoreboard" border=1 align="center">
+                <tr>
+                    <th>Team 1</th><th>Runs</th>
+                </tr>
+            </table>  
+
+          
+            <table  class="inlineTable" id="T2_scoreboard" border=1 align="center">
+                <tr>
+                    <th>Team 2</th> <th>Runs</th>
+                </tr>
+            </table>
+
+        </div>
+
+    
+    </form>
+    <script src="Display_result.js"></script>
+</body>
+</html>

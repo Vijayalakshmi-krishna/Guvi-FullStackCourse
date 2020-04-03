@@ -1,6 +1,6 @@
 export{}
 var animaltable=<HTMLTableElement>document.getElementById("animaltable");
-
+var row;
 class Cat{
     name:String;
     constructor(catName)
@@ -8,8 +8,11 @@ class Cat{
         this.name=catName;
         var catImage = document.createElement("img");
         catImage.src = 'https://www.petsworld.in/blog/wp-content/uploads/2014/09/cute-kittens.jpg';
-        let rowCat= animaltable.insertRow();
-        let cell1=rowCat.insertCell(0);        
+        catImage.style.cursor = "pointer";
+        catImage.style.width = "200px";
+        let row= animaltable.insertRow();
+        let cell1=row.insertCell(0);        
+        let cell2=row.insertCell(1);
         cell1.append(catImage);
         catImage.onclick=this.clickCat();
         document.body.appendChild(animaltable);
@@ -27,8 +30,11 @@ class Dog{
         this.name=name;
         let dogImage=document.createElement("img");        
         dogImage.src='https://cdn.pixabay.com/photo/2016/12/13/05/15/puppy-1903313__340.jpg'
-        let rowDog= animaltable.insertRow();
-        let cell2=rowDog.insertCell(0);
+        dogImage.style.cursor = "pointer";
+        dogImage.style.width = "200px";
+         row= animaltable.insertRow();
+         let cell1=row.insertCell(0);
+        let cell2=row.insertCell(1);
         cell2.append(dogImage);
         dogImage.onclick=this.clickDog();
         document.body.appendChild(animaltable);

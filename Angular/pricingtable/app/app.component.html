@@ -1,10 +1,17 @@
 <p>This is my new {{title}}</p>
-<div class="container mb-5 mt-5">
-  <div class="pricing card-deck flex-column flex-md-row mb-3">
-    <app-starter></app-starter>
-    <app-professional></app-professional>
-    <app-business></app-business>
-    <app-enterprise></app-enterprise>
+<section class="pricing py-5">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <app-pricecard [cardData]="card_free"></app-pricecard>
+      </div>
+      <div class="col-lg-4">
+        <app-pricecard [cardData]="card_plus"></app-pricecard>
+      </div>
+      <div class="col-lg-4">
+        <app-pricecard [cardData]="card_pro"></app-pricecard>
+      </div>
+
+    </div>
   </div>
-  
-</div>
+</section>

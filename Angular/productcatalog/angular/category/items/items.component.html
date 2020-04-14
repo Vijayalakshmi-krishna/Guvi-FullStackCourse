@@ -1,0 +1,17 @@
+//Items components
+<div class="col-lg-4 col-md-2 md-2">
+    <div class="card h-100">
+      <a href="#"><img id="item_img" class="card-img-top" src="assets\Img\{{ItemData.imgsrc}}.jpg" alt=""></a>
+      <div class="card-body">
+        <h4 class="card-title">
+          <a routerLink="{{ItemData.id}}" >{{ItemData.name}}</a>
+        </h4>
+        <h5>{{ItemData.price}}</h5>
+        <p class="card-text">{{ItemData.description}}</p>
+      </div>
+      <div class="card-footer">
+        <small class="text-muted">&#9733; &#9733; &#9733; &#9733;</small>
+      </div>
+    </div>
+  </div>
+  
